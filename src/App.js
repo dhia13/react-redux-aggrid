@@ -25,6 +25,10 @@ function App() {
     () => ({
       sortable: true,
       filter: true,
+      editable: true,
+      resizable: true,
+      minWidth: 100,
+      flex: 1,
     }),
     []
   );
@@ -41,6 +45,9 @@ function App() {
       node.setSelected(true);
     }
   }, [selectNode]);
+  const exportData = useCallback(() => {
+    gridRef.current.api.exportDataAsCsv();
+  }, []);
   return (
     <div className="ag-theme-alpine" style={{ height: 400, width: 600 }}>
       <div>
@@ -55,6 +62,7 @@ function App() {
         rowSelection="single"
         defaultColDef={defaultColDef}
       ></AgGridReact>
+      <button onClick={() => exportData()}>Export Data</button>
     </div>
   );
 }
