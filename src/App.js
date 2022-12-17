@@ -6,6 +6,7 @@ import SelectRow from "./components/SelectRow";
 import { useSelector } from "react-redux";
 
 function App() {
+  //ref to grid option and api
   const gridRef = useRef();
   const [rowData, setRowData] = useState();
   const [columnDefs] = useState([
@@ -27,22 +28,16 @@ function App() {
     }),
     []
   );
-
-  // adding event listner to cells
-  // const cellClickedListener = useCallback((e) => {
-  //   console.log(e);
-  // });
-
-  // deselect all rows on Click
+  // on Click function that uses grid api to deselect all nodes on click
   const deselectAll = useCallback((e) => {
     gridRef.current.api.deselectAll();
   });
+  //state from redux what row to select
   const selectNode = useSelector((state) => state.RowReducer.nodeIndex);
+  // use effect run every time select node changes and select the node depending on state
   useEffect(() => {
     if (gridRef.current && gridRef.current.api) {
-      console.log(selectNode);
       const node = gridRef.current.api.getDisplayedRowAtIndex(selectNode);
-      console.log(node);
       node.setSelected(true);
     }
   }, [selectNode]);
@@ -59,7 +54,6 @@ function App() {
         columnDefs={columnDefs}
         rowSelection="single"
         defaultColDef={defaultColDef}
-        // onCellClicked={cellClickedListener}
       ></AgGridReact>
     </div>
   );
